@@ -22,9 +22,17 @@ Each subject is represented as a graph where:
 
 ## 🏆 Leaderboard
 
-Leaderboard scores are automatically updated.
+Leaderboard scores are automatically updated. 
 
-👉 **[Live Leaderboard](https://rosepy.github.io/Graph4ASD-Challenge)**
+👉 **[Live Leaderboard](https://rosepy.github.io/Graph4ASD-Challenge/docs/leaderboard.html)**
+
+The evaluation metric is **Macro F1-Score**:
+
+$$
+\text{Macro F1} = \frac{F1_{ASD} + F1_{TC}}{2}
+$$
+
+Rankings are sorted by **descending score**.
 
 ---
 
@@ -112,17 +120,30 @@ Train your model using:
 Predict labels for every graph in:
 - `data/public/adj_test.npy` and `data/public/node_features_test.npy`
 
-### Step 3: Prepare your submission file
-Create a CSV with columns `filename` and `prediction` (same format as `submissions/sample_submission.csv`):
+### Step 3: Prepare your submission files
+
+Create a `metadata.json` that c ontains metadata about your submission:
+
+```json
+{
+  "team": "example_team",
+  "run_id": "example_run_id",
+  "type": "human",   // must be "human", "llm-only", or "human+llm"
+  "model": "GAT",
+  "notes": "Additional notes"
+}
+```
+
+Create a CSV with columns `id` and `y_pred` (same format as `data/public/sample_submission.csv`):
 
 ```csv
-id,label
+id,y_pred
 1,0
 2,0
 3,1
 ...
 ```
-Save it as a `.csv` file (e.g. `my_submission.csv`) in the **`submissions/`** folder.  
+Encrypt your `predictions.csv` using: ``` python  extra/encrypt.py predictions.csv ```. Then put  `predictions.csv.enc`) in the **`submissions/`** folder.  
 **Note:** ❗ Do NOT upload the raw CSV. You need to submit an **encrypted** version of your predictions file to keep privacy.
 
 ### Step 4: Encrypt your submission
